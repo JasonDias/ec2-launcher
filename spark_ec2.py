@@ -173,8 +173,8 @@ def get_ami(ami_given):
 def launch_cluster(conn, opts, cluster_name):
   print "Setting up security groups..."
   
-  master_group = get_or_make_group(conn, "ampcamp-master")
-  slave_group = get_or_make_group(conn, "ampcamp-slaves")
+  master_group = get_or_make_group(conn, "shark-exp-master")
+  slave_group = get_or_make_group(conn, "shark-exp-slaves")
   zoo_group = get_or_make_group(conn, "ampcamp-zoo")
   if master_group.rules == []: # Group was just now created
     master_group.authorize(src_group=master_group)
@@ -187,6 +187,9 @@ def launch_cluster(conn, opts, cluster_name):
       master_group.authorize('tcp', 50070, 50070, '0.0.0.0/0')
       master_group.authorize('tcp', 60070, 60070, '0.0.0.0/0')
       master_group.authorize('tcp', 38090, 38090, '0.0.0.0/0')
+      # hbase
+      master_group.authorize('tcp', 60010, 60010, '0.0.0.0/0')
+      master_group.authorize('tcp', 60050, 60050, '0.0.0.0/0')
   if slave_group.rules == []: # Group was just now created
     slave_group.authorize(src_group=master_group)
     slave_group.authorize(src_group=slave_group)
@@ -198,6 +201,8 @@ def launch_cluster(conn, opts, cluster_name):
       slave_group.authorize('tcp', 50075, 50075, '0.0.0.0/0')
       slave_group.authorize('tcp', 60060, 60060, '0.0.0.0/0')
       slave_group.authorize('tcp', 60075, 60075, '0.0.0.0/0')
+      # hbase
+      slave_group.authorize('tcp', 60050, 60050, '0.0.0.0/0')
   if zoo_group.rules == []: # Group was just now created
     zoo_group.authorize(src_group=master_group)
     zoo_group.authorize(src_group=slave_group)
