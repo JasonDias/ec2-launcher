@@ -1,4 +1,8 @@
-ampcamp
-=======
+ec2-launcher
+============
 
-scripts used for launching ampcamp EC2 cluster
+Scripts used for launching EC2 clusters
+
+Based on AMPCamp EC2 scripts.
+
+
